@@ -1,9 +1,16 @@
 import { ChangeEvent, useState } from 'react';
 
 const useInputMask = () => {
+  const [email, setEmail] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [cardCVV, setCardCVV] = useState('');
+  const [isEmpty, setIsEmpty] = useState({
+    email: false,
+    expiry: false,
+    cardNumber: false,
+    cardCVV: false,
+  });
 
   const handleExpiryChange = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -38,7 +45,12 @@ const useInputMask = () => {
     setCardCVV(value);
   };
 
-  return { expiry, cardNumber, cardCVV, handleExpiryChange, handleCardNumberChange, handleCardCVVChange };
+  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    setEmail(value);
+  };
+
+  return { expiry, cardNumber, cardCVV, isEmpty, email, handleExpiryChange, handleCardNumberChange, handleCardCVVChange, handleEmail, setIsEmpty };
 };
 
 export default useInputMask;

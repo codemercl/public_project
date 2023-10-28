@@ -52,8 +52,8 @@ export const SPicSvg = styled.div`
 `;
 
 interface SInputProps {
-  'data-icon'?: boolean;
-  'data-apply'?: boolean;
+  "data-icon"?: boolean;
+  "data-apply"?: boolean;
 }
 
 export const SInput = styled.input<SInputProps>`
@@ -61,7 +61,7 @@ export const SInput = styled.input<SInputProps>`
   border-radius: 4px;
   height: 44px;
   width: 100%;
-  padding: 16px 16px 16px ${props => (props['data-icon'] ? "52px" : "16px")};
+  padding: 16px 16px 16px ${(props) => (props["data-icon"] ? "52px" : "16px")};
   font-size: 14px;
   font-weight: 400;
 
@@ -73,6 +73,16 @@ export const SInput = styled.input<SInputProps>`
 
   @media (max-width: 450px) {
     padding: 13px 36px;
-    padding: 16px 16px 16px ${props => (props['data-icon'] ? "36px" : "16px")};
+    padding: 16px 16px 16px ${(props) => (props["data-icon"] ? "36px" : "16px")};
   }
+`;
+
+export const SError = styled.p`
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #eb5757;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: right;
 `;

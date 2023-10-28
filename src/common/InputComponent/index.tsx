@@ -1,18 +1,20 @@
 import { FC, InputHTMLAttributes, ReactNode } from "react";
-import { SIconSvg, SInput, SPicSvg, STextField, SWrapper } from "./styles";
+import { SError, SIconSvg, SInput, SPicSvg, STextField, SWrapper } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: ReactNode;
   icon?: ReactNode;
   pic?: ReactNode[];
+  isEmpty?: boolean;
 }
 
 export const InputComponent: FC<InputProps> = (props) => {
-  const { label, icon, pic, ...rest } = props;
+  const { label, icon, pic, isEmpty, ...rest } = props;
   
   return (
     <SWrapper>
       {label && <STextField>{label}</STextField>}
+      {isEmpty && <SError>Required</SError>}
       <STextField>
         {icon && <SIconSvg>{icon}</SIconSvg>}
         {pic && (
@@ -22,7 +24,7 @@ export const InputComponent: FC<InputProps> = (props) => {
             ))}
           </SPicSvg>
         )}
-        <SInput data-icon={icon ? true : false} required {...rest} autoComplete="on"/>
+        <SInput data-icon={icon ? true : false} {...rest} autoComplete="on"/>
       </STextField>
     </SWrapper>
   );

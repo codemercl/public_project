@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, FormEvent } from "react";
 import { SColumn, SForm, SWrapper } from "./styles";
 import { ButtonComponent, InputComponent, SpoilerComponent } from "common";
 import AppleIconSvg from "assets/icons/partner-icons/apple-icon";
@@ -8,32 +8,61 @@ import { AccordeonComponent, CollapseComponent } from "components";
 import useInputMask from "hooks/useInputMask";
 
 export const Payment: FC = () => {
-  const { expiry, cardNumber, cardCVV, handleExpiryChange, handleCardNumberChange, handleCardCVVChange } = useInputMask();
+  const { expiry, cardNumber, cardCVV, isEmpty, email, handleExpiryChange, handleCardNumberChange, handleCardCVVChange, handleEmail, setIsEmpty } = useInputMask();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const errors = {
+      email: email === '',
+      expiry: expiry === '',
+      cardNumber: cardNumber === '',
+      cardCVV: cardCVV === '',
+    };
+
+    setIsEmpty(errors);
+
+    // Проверьте, есть ли хотя бы одно поле с ошибкой
+    if (Object.values(errors).some(error => error)) {
+      // Если есть хотя бы одна ошибка, не выполняйте отправку формы
+    } else {
+      // Отправка данных формы или другая логика
+    }
+  }
 
   return (
     <SWrapper>
       <ButtonComponent variant={ButtonType.Link} icon={<AppleIconSvg />} />
       <SpoilerComponent title="Or pay with card" />
-      <SForm>
+      <SForm onSubmit={handleSubmit}>
         {inputPropsList.slice(0, 1).map((inputProps, index) => (
-          <InputComponent key={index} {...inputProps}/>
+          <InputComponent key={index} 
+            {...inputProps} isEmpty={isEmpty.email}  
+            onChange={handleEmail} 
+            value={email} 
+          />
         ))}
         <SColumn>
           {inputPropsList.slice(1, 2).map((inputProps, index) => (
-            <InputComponent key={index} {...inputProps} value={cardNumber} onChange={handleCardNumberChange} />
+            <InputComponent key={index} 
+              {...inputProps} isEmpty={isEmpty.cardNumber || isEmpty.expiry || isEmpty.cardCVV} 
+              onChange={handleCardNumberChange} 
+              value={cardNumber}
+            />
           ))}
           {inputPropsList.slice(2, 4).map((inputProps, index) => (
-            <InputComponent key={index} {...inputProps}
-              value={index === 0 ? expiry : cardCVV}
+            <InputComponent key={index} 
+              {...inputProps} 
               onChange={index === 0 ? handleExpiryChange : handleCardCVVChange}
+              value={index === 0 ? expiry : cardCVV}
             />
           ))}
         </SColumn>
         {inputPropsList.slice(-1).map((inputProps, index) => (
-          <InputComponent key={index} {...inputProps}  />
+          <InputComponent key={index} {...inputProps} />
         ))}
         <CollapseComponent />
-        <ButtonComponent variant={ButtonType.Submit} title="Submit order" />
+        <ButtonComponent type="submit" variant={ButtonType.Submit} title="Submit order" />
       </SForm>
       <SpoilerComponent title="Or alternative methods" />
       <AccordeonComponent />
